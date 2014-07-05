@@ -6,12 +6,12 @@ import java.util.Random;
 
 public abstract class Fighter {
 
-	public int getIntDefense(){return 0;}
-	public int getIntDamage(){return 0;}
-	public String getStrHealth(){return"";}
-	public int getIntHealth(){return 0;}
-	public void subtractHealth(int damage){return;}
-	public void setZeroHealth(){return;}
+	public abstract int getIntDefense();
+	public abstract int getIntDamage();
+	public abstract String getStrHealth();
+	public abstract int getIntHealth();
+	public abstract void subtractHealth(int damage);
+	public abstract void setZeroHealth();
 	
 	public int calculateDamage(int min, int max){
 		Random rand = new Random();

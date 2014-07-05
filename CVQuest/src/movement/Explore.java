@@ -524,8 +524,7 @@ public class Explore {
 						System.out.println("Trying to use " + currentKey.getStrName());
 						if (aSeparation.unLock(currentKey)){
 							System.out.println("Door unlocked");
-							Confirm confirm = new Confirm();
-							confirm.pressEnter("<Press enter to continue>");
+							Confirm.pressEnter("<Press enter to continue>");
 							return true;
 						}else{
 							System.out.println("The key does not fit");

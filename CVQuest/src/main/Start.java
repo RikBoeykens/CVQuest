@@ -14,7 +14,7 @@ public class Start {
 	public static void main(String[] args) {
 		InputStreamReader input = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(input);
-		Confirm confirm = new Confirm();
+
 		
 		System.out.print("Welcome to CV Quest! You'll be going on a search for the lost Scroll of Curriculum Vitae.\n"
 				+ "But first: what is your name? ");
@@ -32,7 +32,7 @@ public class Start {
 		
 		Play game = new Play (pl, explore);
 		
-		if (confirm.getConfirm("Show tutorial?")){
+		if (Confirm.getConfirm("Show tutorial?")){
 			Tutorial tut = new Tutorial();
 			tut.showTutorial();
 		}

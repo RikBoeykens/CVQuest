@@ -11,7 +11,7 @@ public class Confirm {
 	public Confirm(){
 	}
 	//this method asks for validation of a yes-no question and outputs true/false based on this
-	public boolean getConfirm(String strMessage){
+	public static boolean getConfirm(String strMessage){
 		InputStreamReader input = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(input);
 		System.out.println(strMessage + " y/n");
@@ -27,7 +27,7 @@ public class Confirm {
 		
 	}
 	
-	public void pressEnter(String strMessage){
+	public static void pressEnter(String strMessage){
 		InputStreamReader input = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(input);
 		System.out.println(strMessage);

@@ -20,8 +20,8 @@ public class Fight {
 		monster = mon;
 	}
 	public int fight(){
-		Confirm confirm = new Confirm();
-		confirm.pressEnter("<Please press enter to continue>");
+
+		Confirm.pressEnter("<Please press enter to continue>");
 		while (true){
 		//while loop runs while neither is dead or until "run away"
 			//print info
@@ -31,13 +31,13 @@ public class Fight {
 				return -1;
 			}
 
-			confirm.pressEnter("<Press enter to continue>");
+			Confirm.pressEnter("<Press enter to continue>");
 			outcome = playerTurn();
 			if (outcome>=0){
 				return outcome;
 			}
 			player.reduceBuffs();
-			confirm.pressEnter("<Press enter to continue>");
+			Confirm.pressEnter("<Press enter to continue>");
 		}
 	}
 	private int monsterTurn(){
@@ -124,7 +124,7 @@ public class Fight {
 			n='A';
 			if(!player.getInventory().getEquipped().magicWandEquipped()){
 				if (n==charInput){
-					int damageDone = doDamage(monster, player.getDamage());
+					int damageDone = doDamage(monster, player.getIntDamage());
 					System.out.println("You do " + (damageDone+monster.getIntDefense()) + " damage.");
 					if (monster.getIntDefense()>0){
 						System.out.println("The monster's defense absorbs " + monster.getIntDefense() + " leaving " + damageDone + ".");

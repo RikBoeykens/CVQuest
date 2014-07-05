@@ -2,10 +2,11 @@ package inventory;
 /*
  * 	Container class: can contain different items
  */
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Container {
-	private ArrayList<Item>items = new ArrayList<Item>();
+	private LinkedList<Item>items = new LinkedList<Item>();
 	private String strDescription;
 	private String strName;
 	
@@ -28,7 +29,7 @@ public class Container {
 		return strDescription;
 	}
 	
-	public ArrayList<Item>getItems(){
+	public List<Item>getItems(){
 		return items;
 	}
 	

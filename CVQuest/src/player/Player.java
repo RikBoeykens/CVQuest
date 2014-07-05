@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import armsandarmour.*;
 import potions.*;
@@ -55,7 +56,7 @@ public class Player extends Fighter{
 		return output;
 	}
 	
-	public int getDamage(){
+	public int getIntDamage(){
 		return getBasicDamage()+getExtraDamage();
 	}
 	
@@ -142,8 +143,7 @@ public class Player extends Fighter{
 			output += buff.getStrEffect() + "(" + buff.intTime + " turns left)\n";
 		}
 		System.out.println(output);
-		Confirm confirm = new Confirm();
-		confirm.pressEnter("<Please press enter to continue>");
+		Confirm.pressEnter("<Please press enter to continue>");
 		
 	}
 	//heals the player with input of an integer. If input will exceed max health only int health becomes max health
@@ -151,8 +151,7 @@ public class Player extends Fighter{
 		int formerHealth = intHealth;
 		intHealth = (intHealth+intHeal>intMAXHealth)?intMAXHealth:intHealth+intHeal;
 		System.out.println("Healed " + (intHealth-formerHealth) + " points. Current Health: " + getStrHealth());
-		Confirm confirm = new Confirm();
-		confirm.pressEnter("<Please press enter to continue>");
+		Confirm.pressEnter("<Please press enter to continue>");
 	}
 	//allows you to choose a spell and do specific things to it
 	public void spellMenu(){
@@ -308,8 +307,7 @@ public class Player extends Fighter{
 		}else{
 			System.out.println("Equipping " + modifier.getStrName() + " to " + spell.getStrName());
 			spell.setModifyingSpell(modifier);
-			Confirm confirm = new Confirm();
-			confirm.pressEnter("<Please press enter to continue>");
+			Confirm.pressEnter("<Please press enter to continue>");
 		}
 	}
 	//a recursive function which finds the last modifier and returns it
@@ -733,8 +731,7 @@ public class Player extends Fighter{
 			}
 			inventory.getEquipped().setWeapon(newWeapon);
 			System.out.println("Equipped " + newWeapon.getStrName());
-			Confirm confirm = new Confirm();
-			confirm.pressEnter("<Press enter to continue>");
+			Confirm.pressEnter("<Press enter to continue>");
 			return true;
 		}
 		return false;
@@ -747,8 +744,7 @@ public class Player extends Fighter{
 			}
 			inventory.getEquipped().setShield(newShield);
 			System.out.println("Equipped " + newShield.getStrName());
-			Confirm confirm = new Confirm();
-			confirm.pressEnter("<Press enter to continue>");
+			Confirm.pressEnter("<Press enter to continue>");
 			return true;
 		}
 		return false;
@@ -761,8 +757,7 @@ public class Player extends Fighter{
 			}
 			inventory.getEquipped().setArmour(newArmour);
 			System.out.println("Equipped " + newArmour.getStrName());
-			Confirm confirm = new Confirm();
-			confirm.pressEnter("<Press enter to continue>");
+			Confirm.pressEnter("<Press enter to continue>");
 			return true;
 		}
 		return false;
@@ -772,9 +767,8 @@ public class Player extends Fighter{
 		boolean hasWeapon = inventory.getEquipped().getWeapon()!=null;
 		boolean hasArmour = inventory.getEquipped().getArmour()!=null;
 		boolean hasShield = inventory.getEquipped().getShield()!=null;
-		Confirm confirm = new Confirm();
 		if(hasArmour||hasWeapon||hasShield){
-			if (confirm.getConfirm("Doing this will unequip any weapons, shields or armour.")){
+			if (Confirm.getConfirm("Doing this will unequip any weapons, shields or armour.")){
 				if (hasWeapon){
 					inventory.getWeapons().add(inventory.getEquipped().getWeapon());
 				}
@@ -790,7 +784,7 @@ public class Player extends Fighter{
 				
 				inventory.getEquipped().setMagicWand(newWand);
 				System.out.println("Equipped " + newWand.getStrName());
-				confirm.pressEnter("<Press enter to continue>");
+				Confirm.pressEnter("<Press enter to continue>");
 				return true;
 			}
 			return false;
@@ -798,14 +792,13 @@ public class Player extends Fighter{
 		}
 		inventory.getEquipped().setMagicWand(newWand);
 		System.out.println("Equipped " + newWand.getStrName());
-		confirm.pressEnter("<Press enter to continue>");
+		Confirm.pressEnter("<Press enter to continue>");
 		return true;
 	}
 	//asks for permission to unequip the magic wand
 	public boolean unequipMagicWand(){
 		if(inventory.getEquipped().magicWandEquipped()){
-			Confirm confirm = new Confirm();
-			if (confirm.getConfirm("Doing this will unequip the magic wand")){
+			if (Confirm.getConfirm("Doing this will unequip the magic wand")){
 				inventory.getMagicWands().add(inventory.getEquipped().getMagicWand());
 				inventory.getEquipped().setMagicWand(null);
 				return true;
@@ -816,13 +809,12 @@ public class Player extends Fighter{
 	}
 	//this function reduces the time in the buffs. If time is 0 it deletes them
 	public void reduceBuffs(){
-		Confirm confirm = new Confirm();
 		int n = 0;
 		while (n<extraStrength.size()){
 			extraStrength.get(n).intTime--;
 			if (extraStrength.get(n).intTime<=0){
 				System.out.println(extraStrength.get(n).getStrEffect() + " wears off.");
-				confirm.pressEnter("<Please press enter to continue>");
+				Confirm.pressEnter("<Please press enter to continue>");
 				extraStrength.remove(n);
 			}
 			n++;
@@ -832,7 +824,7 @@ public class Player extends Fighter{
 			extraDefense.get(n).intTime--;
 			if (extraDefense.get(n).intTime<=0){
 				System.out.println(extraDefense.get(n).getStrEffect() + " wears off.");
-				confirm.pressEnter("<Please press enter to continue>");
+				Confirm.pressEnter("<Please press enter to continue>");
 				extraDefense.remove(n);
 			}
 			n++;
@@ -887,9 +879,7 @@ public class Player extends Fighter{
 		
 		System.out.println(inventory);
 		
-		Confirm confirm = new Confirm();
-		
-		if (confirm.getConfirm("Examine items?")){
+		if (Confirm.getConfirm("Examine items?")){
 			while(true){
 				char n = 'A';
 				String strOptions = "Please choose an option\n";
@@ -977,28 +967,28 @@ public class Player extends Fighter{
 				if (inventory.getEquipped().getMagicWand()!=null){
 					if (charInput ==n){
 						System.out.println(inventory.getEquipped().getMagicWand().getStrName() + ": " + inventory.getEquipped().getMagicWand().getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
 				if (inventory.getEquipped().getWeapon()!=null){
 					if (charInput ==n){
 						System.out.println(inventory.getEquipped().getWeapon().getStrName() + ": " + inventory.getEquipped().getWeapon().getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
 				if (inventory.getEquipped().getShield()!=null){
 					if (charInput ==n){
 						System.out.println(inventory.getEquipped().getShield().getStrName() + ": " +  inventory.getEquipped().getShield().getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
 				if (inventory.getEquipped().getArmour()!=null){
 					if (charInput ==n){
 						System.out.println(inventory.getEquipped().getArmour().getStrName() + ": " + inventory.getEquipped().getArmour().getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
@@ -1007,12 +997,12 @@ public class Player extends Fighter{
 					Weapon current = inventory.getWeapons().get(i);
 					if (charInput ==n){
 						System.out.println(current.getStrDescription());
-						if (confirm.getConfirm("Equip " + current.getStrName())){
+						if (Confirm.getConfirm("Equip " + current.getStrName())){
 							if (equipWeapon(current)){
 								inventory.getWeapons().remove(i);
 							}
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1022,12 +1012,12 @@ public class Player extends Fighter{
 					MagicWand current = inventory.getMagicWands().get(i);
 					if (charInput ==n){
 						System.out.println(current.getStrDescription());
-						if (confirm.getConfirm("Equip " + current.getStrName())){
+						if (Confirm.getConfirm("Equip " + current.getStrName())){
 							if (equipMagicWand(current)){
 								inventory.getMagicWands().remove(i);
 							}
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1037,12 +1027,12 @@ public class Player extends Fighter{
 					Armour current = inventory.getArmours().get(i);
 					if (charInput ==n){
 						System.out.println(current.getStrDescription());
-						if (confirm.getConfirm("Equip " + current.getStrName())){
+						if (Confirm.getConfirm("Equip " + current.getStrName())){
 							if (equipArmour(current)){
 								inventory.getArmours().remove(i);
 							}
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1052,12 +1042,12 @@ public class Player extends Fighter{
 					Shield current = inventory.getShields().get(i);
 					if (charInput ==n){
 						System.out.println(current.getStrDescription());
-						if (confirm.getConfirm("Equip " + current.getStrName())){
+						if (Confirm.getConfirm("Equip " + current.getStrName())){
 							if (equipShield(current)){
 								inventory.getShields().remove(i);
 							}
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1065,7 +1055,7 @@ public class Player extends Fighter{
 				for (Net net:inventory.getNets()){
 					if (charInput ==n){
 						System.out.println(net.getStrName() + ": " + net.getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
@@ -1075,12 +1065,12 @@ public class Player extends Fighter{
 					if (charInput ==n){
 						System.out.println(currentPotion.getStrDescription());
 						if (needsHealing()){
-							if (confirm.getConfirm("Use " + currentPotion.getStrName())){
+							if (Confirm.getConfirm("Use " + currentPotion.getStrName())){
 								healingPotion(currentPotion);
 								inventory.getHealingPotions().remove(i);
 							}
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1090,11 +1080,11 @@ public class Player extends Fighter{
 					StrengthPotion currentPotion = inventory.getStrengthPotions().get(i);
 					if (charInput ==n){
 						System.out.println(currentPotion.getStrDescription());
-						if (confirm.getConfirm("Use " + currentPotion.getStrName())){
+						if (Confirm.getConfirm("Use " + currentPotion.getStrName())){
 							strengthPotion(currentPotion);
 							inventory.getStrengthPotions().remove(i);
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1104,11 +1094,11 @@ public class Player extends Fighter{
 					DefensePotion currentPotion = inventory.getDefensePotions().get(i);
 					if (charInput ==n){
 						System.out.println(currentPotion.getStrDescription());
-						if (confirm.getConfirm("Use " + currentPotion.getStrName())){
+						if (Confirm.getConfirm("Use " + currentPotion.getStrName())){
 							defensePotion(currentPotion);
 							inventory.getDefensePotions().remove(i);
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					i++;
 					n++;
@@ -1117,7 +1107,7 @@ public class Player extends Fighter{
 				for (Key key: inventory.getKeychain()){
 					if (charInput ==n){
 						System.out.println(key.getStrName() + ": " + key.getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
@@ -1125,18 +1115,18 @@ public class Player extends Fighter{
 					if (charInput ==n){
 						System.out.println(spell.getStrName() + " " + spell.getStrDescription());
 						if (hasHealingSpells()&&needsHealing()){
-							if (confirm.getConfirm("Use spell?")){
+							if (Confirm.getConfirm("Use spell?")){
 								healPlayer(spell.getIntHeal());
 							}
 						}
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
 				for (AttackSpell spell: inventory.getSpellbook().getAttackSpells()){
 					if (charInput ==n){
 						System.out.println(spell.getStrName() + ": " +spell.getStrDescription());
-						confirm.pressEnter("<Press enter to continue>");
+						Confirm.pressEnter("<Press enter to continue>");
 					}
 					n++;
 				}
@@ -1146,7 +1136,7 @@ public class Player extends Fighter{
 						ModifyingSpell spell = inventory.getSpellbook().getModifyingSpells().get(i);
 						System.out.println(spell.getStrName() + ": " + spell.getStrDescription());
 						if(inventory.getEquipped().magicWandEquipped()){
-							if (confirm.getConfirm("Use spell?")){
+							if (Confirm.getConfirm("Use spell?")){
 								if (modifyingSpellOptions(spell)){
 									inventory.getSpellbook().getModifyingSpells().remove(i);
 								}
@@ -1165,7 +1155,7 @@ public class Player extends Fighter{
 				for (Note note:inventory.getNotes()){
 					if (charInput ==n){
 						System.out.println(note.getStrDescription());
-						if (confirm.getConfirm("Read note?")){
+						if (Confirm.getConfirm("Read note?")){
 							note.readNote();
 						}
 					}
@@ -1184,12 +1174,13 @@ public class Player extends Fighter{
 			return false;
 		}
 		System.out.println ("You examine the " + container.getStrName());
-		int n =0;
-		while (container.getItems().size()>n){
-			Item currentItem = container.getItems().get(n);
+		ListIterator<Item>iterator = container.getItems().listIterator();
+
+		while (iterator.hasNext()){
+			Item currentItem = iterator.next();
 			System.out.println("\n" +currentItem.getStrName()+ ": " + currentItem.getStrDescription());
-			Confirm confirm = new Confirm();
-			if (confirm.getConfirm("Take " + currentItem.getStrName() + "?")){
+
+			if (Confirm.getConfirm("Take " + currentItem.getStrName() + "?")){
 				//the program determines what to do with the item by checking it's class
 				if (currentItem.getClass().isInstance(new Key("","", ""))){
 					System.out.println("Key " + currentItem.getStrName() + " added.");
@@ -1197,7 +1188,7 @@ public class Player extends Fighter{
 				
 				}else if(currentItem.getClass().isInstance(new HealingPotion("","",0))){
 					if (needsHealing()){
-						if(confirm.getConfirm("Use " + currentItem.getStrName() + " ?")){
+						if(Confirm.getConfirm("Use " + currentItem.getStrName() + " ?")){
 							healingPotion((HealingPotion)currentItem);
 						}else{
 							System.out.println(currentItem.getStrName() + " added.");
@@ -1210,7 +1201,7 @@ public class Player extends Fighter{
 					}
 				
 				}else if(currentItem.getClass().isInstance(new StrengthPotion("","",0, "", 0))){
-					if(confirm.getConfirm("Use "+ currentItem.getStrName() +" ?")){
+					if(Confirm.getConfirm("Use "+ currentItem.getStrName() +" ?")){
 						strengthPotion((StrengthPotion)currentItem);
 					}else{
 						System.out.println(currentItem.getStrName() + " added.");
@@ -1218,7 +1209,7 @@ public class Player extends Fighter{
 					}
 				
 				}else if(currentItem.getClass().isInstance(new DefensePotion("","",0, "", 0))){
-					if(confirm.getConfirm("Use "+ currentItem.getStrName() +" ?")){
+					if(Confirm.getConfirm("Use "+ currentItem.getStrName() +" ?")){
 						defensePotion((DefensePotion)currentItem);
 					}else{
 						System.out.println(currentItem.getStrName() + " added.");
@@ -1242,7 +1233,7 @@ public class Player extends Fighter{
 					inventory.getSpellbook().setFunctionSpell((FunctionSpell)currentItem);
 				
 				}else if(currentItem.getClass().isInstance(new Note("","",""))){
-					if (confirm.getConfirm("Read note?")){
+					if (Confirm.getConfirm("Read note?")){
 						((Note)currentItem).readNote();
 					}
 					inventory.getNotes().add((Note)currentItem);
@@ -1253,7 +1244,7 @@ public class Player extends Fighter{
 					System.out.println(currentItem.getStrName() + " added");
 				
 				}else if (currentItem.getClass().isInstance(new Weapon("","",0,0))){
-					if (confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
+					if (Confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
 						if(!equipWeapon((Weapon) currentItem)){
 							System.out.println(currentItem.getStrName() + " added to inventory.");
 							inventory.getWeapons().add((Weapon)currentItem);
@@ -1264,7 +1255,7 @@ public class Player extends Fighter{
 					}
 				
 				}else if (currentItem.getClass().isInstance(new MagicWand("",""))){
-					if (confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
+					if (Confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
 						if(!equipMagicWand((MagicWand) currentItem)){
 							System.out.println(currentItem.getStrName() + " added to inventory.");
 							inventory.getMagicWands().add((MagicWand)currentItem);
@@ -1275,7 +1266,7 @@ public class Player extends Fighter{
 					}
 				
 				}else if (currentItem.getClass().isInstance(new Armour("","",0))){
-					if (confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
+					if (Confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
 						if(!equipArmour((Armour) currentItem)){
 							System.out.println(currentItem.getStrName() + " added to inventory.");
 							inventory.getArmours().add((Armour)currentItem);
@@ -1286,7 +1277,7 @@ public class Player extends Fighter{
 					}
 				
 				}else if (currentItem.getClass().isInstance(new Shield("","",0))){
-					if (confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
+					if (Confirm.getConfirm("Equip " + currentItem.getStrName() + "?")){
 						if(!equipShield((Shield) currentItem)){
 							System.out.println(currentItem.getStrName() + " added to inventory.");
 							inventory.getShields().add((Shield)currentItem);
@@ -1301,9 +1292,7 @@ public class Player extends Fighter{
 					System.out.println(currentItem.getStrName() + " added.");
 					inventory.getRest().add(currentItem);
 				}
-				container.getItems().remove(n);
-			}else{
-				n++;
+				iterator.remove();
 			}
 		}
 		return false;

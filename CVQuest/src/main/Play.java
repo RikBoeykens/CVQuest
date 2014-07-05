@@ -21,7 +21,6 @@ public class Play {
 	}
 
 	public void Menu(){
-		Confirm confirm = new Confirm();
 		while(playing){
 			explore.currentRoom().explored=true;
 			player.reduceBuffs();
@@ -32,7 +31,7 @@ public class Play {
 				int outcome = fight.fight();
 				if (outcome==1){
 					System.out.println("You defeated the monster!");
-					confirm.pressEnter("<Please press enter to continue>");
+					Confirm.pressEnter("<Please press enter to continue>");
 				}else if (outcome==0){
 					System.out.println("You ran away");
 					explore.gotoPreviousRoom();
@@ -52,7 +51,6 @@ public class Play {
 	private void showOptions(){
 		InputStreamReader input = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(input);
-		Confirm confirm = new Confirm();
 		/*
 		 * Dynamic menu only shows what's applicable.
 		 * 		It initially goes over every option (including looping through lists) and prints it out if it's applicable
@@ -120,34 +118,34 @@ public class Play {
 			n='A';
 			if (charInput=='8'){
 				if(explore.tryMoveNorth()){
-					confirm.pressEnter("<Press enter to continue>");
+					Confirm.pressEnter("<Press enter to continue>");
 					return;
 				}
-				confirm.pressEnter("<Press enter to continue>");
+				Confirm.pressEnter("<Press enter to continue>");
 			}
 
 			if (charInput=='6'){
 				if(explore.tryMoveEast()){
-					confirm.pressEnter("<Press enter to continue>");
+					Confirm.pressEnter("<Press enter to continue>");
 					return;
 				}
-				confirm.pressEnter("<Press enter to continue>");
+				Confirm.pressEnter("<Press enter to continue>");
 			}
 
 			if (charInput =='2'){
 				if(explore.tryMoveSouth()){
-					confirm.pressEnter("<Press enter to continue>");
+					Confirm.pressEnter("<Press enter to continue>");
 					return;
 				}
-				confirm.pressEnter("<Press enter to continue>");
+				Confirm.pressEnter("<Press enter to continue>");
 			}
 
 			if(charInput=='4'){
 				if(explore.tryMoveWest()){
-					confirm.pressEnter("<Press enter to continue>");
+					Confirm.pressEnter("<Press enter to continue>");
 					return;
 				}
-				confirm.pressEnter("<Press enter to continue>");
+				Confirm.pressEnter("<Press enter to continue>");
 			}
 
 			if(charInput ==n){

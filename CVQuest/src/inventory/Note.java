@@ -18,8 +18,7 @@ public class Note extends Item{
 	
 	public void readNote(){
 		System.out.println(strContents);
-		Confirm confirm = new Confirm();
-		confirm.pressEnter("<Press enter to continue>");
+		Confirm.pressEnter("<Press enter to continue>");
 	}
 	
 }
