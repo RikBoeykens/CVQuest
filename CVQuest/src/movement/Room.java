@@ -6,8 +6,7 @@ import inventory.*;
 import fight.Monster;
 
 public class Room {
-	private int x;
-	private int y;
+	private Coordinates coordinates;
 	private String strDescription;
 	public boolean explored;
 	private Container container;
@@ -19,8 +18,7 @@ public class Room {
 	
 
 	public Room(int intX, int intY, String descript, Separation n, Separation e, Separation s, Separation w, Container c, Monster m){
-		x = intX;
-		y = intY;
+		coordinates = new Coordinates(intX, intY);
 		strDescription = descript;
 		north = n;
 		east = e;
@@ -31,13 +29,10 @@ public class Room {
 		monster = m;
 	}
 
-	public int getX() {
-		return x;
+	public Coordinates getCoordinates(){
+		return coordinates;
 	}
-
-	public int getY() {
-		return y;
-	}
+	
 	public void onArrival(){
 		explored = true;
 	}

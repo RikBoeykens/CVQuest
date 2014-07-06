@@ -20,7 +20,7 @@ import main.Confirm;
 public class Explore {
 	private Player player;
 	private Map map;
-	private ArrayList<int[]>roomsvisited= new ArrayList<int[]>();
+	private ArrayList<Coordinates>roomsvisited= new ArrayList<Coordinates>();
 	
 	public Explore(Player p){
 		player = p;
@@ -407,24 +407,25 @@ public class Explore {
 											new Net(".NET", "Use this to trap a monster", 10))))
 				
 				);
-		roomsvisited.add(new int[]{0,0});
+		roomsvisited.add(new Coordinates(0, 0));
 	}
 	
 	
 	public Room currentRoom(){
-		return map.getRoom(player.x, player.y);
+		return map.getRoom(player.getCoordinates());
 	}
 	
 	public boolean tryMoveNorth(){
-		if(map.roomExists(player.x, player.y+1)){
+		Coordinates newRoomCoordinates = new Coordinates(player.getCoordinates().getX(), player.getCoordinates().getY()+1);
+		if(map.roomExists(newRoomCoordinates)){
 			if (currentRoom().getNorth().getClass().isInstance(new Wall(""))){
 				System.out.println("There is a wall in the way");
 			}else{
-				Room nextRoom = map.getRoom(player.x, player.y+1);
+				Room nextRoom = map.getRoom(newRoomCoordinates);
 				if (tryPassBetweenRooms(currentRoom().getNorth(),nextRoom.getSouth())){
-					player.y++;
+					player.getCoordinates().increaseY();
 					System.out.println("Moving North");
-					roomsvisited.add(new int[] {player.x, player.y});
+					roomsvisited.add(newRoomCoordinates);
 					return true;
 				}
 			}
@@ -434,16 +435,17 @@ public class Explore {
 	}
 	
 	public boolean tryMoveEast(){
-		if(map.roomExists(player.x+1, player.y)){
+		Coordinates newRoomCoordinates = new Coordinates(player.getCoordinates().getX() + 1, player.getCoordinates().getY());
+		if(map.roomExists(newRoomCoordinates)){
 			if (currentRoom().getEast().getClass().isInstance(new Wall(""))){
 				System.out.println("There is a wall in the way");
 			}
 			else{
-				Room nextRoom = map.getRoom(player.x+1, player.y);
+				Room nextRoom = map.getRoom(newRoomCoordinates);
 				if (tryPassBetweenRooms(currentRoom().getEast(), nextRoom.getWest())){
-					player.x++;
+					player.getCoordinates().increaseX();
 					System.out.println("Moving East");
-					roomsvisited.add(new int[] {player.x, player.y});
+					roomsvisited.add(newRoomCoordinates);
 					return true;
 				}
 			}
@@ -454,15 +456,16 @@ public class Explore {
 	}
 	
 	public boolean tryMoveSouth(){
-		if(map.roomExists(player.x, player.y-1)){
+		Coordinates newRoomCoordinates = new Coordinates(player.getCoordinates().getX(), player.getCoordinates().getY()-1);
+		if(map.roomExists(newRoomCoordinates)){
 			if (currentRoom().getSouth().getClass().isInstance(new Wall(""))){
 				System.out.println("There is a wall in the way");
 			}else{
-				Room nextRoom = map.getRoom(player.x, player.y-1);
+				Room nextRoom = map.getRoom(newRoomCoordinates);
 				if (tryPassBetweenRooms(currentRoom().getSouth(),nextRoom.getNorth())){
-					player.y--;
+					player.getCoordinates().decreaseY();
 					System.out.println("Moving South");
-					roomsvisited.add(new int[] {player.x, player.y});
+					roomsvisited.add(newRoomCoordinates);
 					return true;
 				}
 			}
@@ -472,16 +475,17 @@ public class Explore {
 	}
 	
 	public boolean tryMoveWest(){
-		if(map.roomExists(player.x-1, player.y)){
+		Coordinates newRoomCoordinates = new Coordinates(player.getCoordinates().getX()-1, player.getCoordinates().getY());
+		if(map.roomExists(newRoomCoordinates)){
 			if (currentRoom().getWest().getClass().isInstance(new Wall(""))){
 				System.out.println("There is a wall in the way");
 			}
 			else{
-				Room nextRoom = map.getRoom(player.x-1, player.y);
+				Room nextRoom = map.getRoom(newRoomCoordinates);
 				if (tryPassBetweenRooms(currentRoom().getWest(), nextRoom.getEast())){
-					player.x--;
+					player.getCoordinates().decreaseX();
 					System.out.println("Moving West");
-					roomsvisited.add(new int[] {player.x, player.y});
+					roomsvisited.add(newRoomCoordinates);
 					return true;
 				}
 			}
@@ -548,9 +552,10 @@ public class Explore {
 		for (int j = highestY;j>=0;j--){
 			//first loop through X for North
 			for (int i=0; i<=highestX;i++){
-				if (map.roomExists(i, j)){
-					if (map.getRoom(i, j).explored){
-						strOutput += "##" + map.getRoom(i, j).getNorth().getStrMap() + "##";
+				Coordinates roomCoordinates = new Coordinates(i, j);
+				if (map.roomExists(roomCoordinates)){
+					if (map.getRoom(roomCoordinates).explored){
+						strOutput += "##" + map.getRoom(roomCoordinates).getNorth().getStrMap() + "##";
 					}else{
 						strOutput += "======";
 					}
@@ -561,12 +566,13 @@ public class Explore {
 			strOutput += "\n";
 			//second loop through X for middle
 			for (int i = 0; i<=highestX;i++){
-				if (map.roomExists(i, j)){
-					Room currentRoom = map.getRoom(i, j);
+				Coordinates roomCoordinates = new Coordinates(i, j);
+				if (map.roomExists(roomCoordinates)){
+					Room currentRoom = map.getRoom(roomCoordinates);
 					if (currentRoom.explored){
 						strOutput += currentRoom.getWest().getStrMap();
 						
-						if(player.x==i&&player.y==j){
+						if(roomCoordinates.getStrCoordinates().equals(player.getCoordinates().getStrCoordinates())){
 							strOutput +="()";
 						}else{
 							if (currentRoom.containerUnopened()){
@@ -588,9 +594,10 @@ public class Explore {
 			strOutput += "\n";
 			//third loop to print south
 			for (int i=0; i<=highestX;i++){
-				if (map.roomExists(i, j)){
-					if (map.getRoom(i, j).explored){
-						strOutput += "##" + map.getRoom(i, j).getSouth().getStrMap() + "##";
+				Coordinates roomCoordinates = new Coordinates(i, j);
+				if (map.roomExists(roomCoordinates)){
+					if (map.getRoom(roomCoordinates).explored){
+						strOutput += "##" + map.getRoom(roomCoordinates).getSouth().getStrMap() + "##";
 					}else{
 						strOutput += "======";
 					}
@@ -603,9 +610,8 @@ public class Explore {
 		return strOutput;
 	}
 	public void gotoPreviousRoom(){
-		int[]previousroom = roomsvisited.get(roomsvisited.size()-2);
-		player.x=previousroom[0];
-		player.y=previousroom[1];
+		Coordinates previousCoordinates = roomsvisited.get(roomsvisited.size()-2);
+		player.setCoordinates(previousCoordinates);
 	}
 
 }

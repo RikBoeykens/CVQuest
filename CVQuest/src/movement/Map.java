@@ -2,51 +2,37 @@ package movement;
 /*
  * 	Map class: has all the information on the rooms on the map
  */
-import java.util.ArrayList;
+
+import java.util.HashMap;
 
 public class Map {
-	private ArrayList<Room> map = new ArrayList<Room>();
+	private HashMap<String, Room> map = new HashMap<String, Room>();
+	private int intHighestX;
+	private int intHighestY;
 	
 	Map(Room...rooms){
+		intHighestX = 0;
+		intHighestY = 0;
 		for (Room aRoom:rooms){
-			map.add(aRoom);
+			map.put(aRoom.getCoordinates().getStrCoordinates(), aRoom);
+			intHighestX = Math.max(intHighestX, aRoom.getCoordinates().getX());
+			intHighestY = Math.max(intHighestY, aRoom.getCoordinates().getY());
 		}
 	}
-	public boolean roomExists(int x, int y){
-		for (Room room: map){
-			if (room.getX()==x&&room.getY()==y){
-				return true;
-			}
-		}
-		return false;
+	public boolean roomExists(Coordinates coordinates){
+		return map.containsKey(coordinates.getStrCoordinates());
 	}
-	public Room getRoom(int x, int y){
-		for (Room room: map){
-			if (room.getX()==x&&room.getY()==y){
-				return room;
-			}
-		}
-		return null;
+	public Room getRoom(Coordinates coordinates){
+		return map.get(coordinates.getStrCoordinates());
 	}
-	public ArrayList<Room>getMap(){
+	public HashMap<String, Room>getMap(){
 		return map;
 	}
+	
 	public int highestX(){
-		int output = 0;
-		for (Room rooms:map){
-			if (rooms.getX()>output){
-				output = rooms.getX();
-			}
-		}
-		return output;
+		return intHighestX;
 	}
 	public int highestY(){
-		int output = 0;
-		for (Room rooms:map){
-			if (rooms.getY()>output){
-				output = rooms.getY();
-			}
-		}
-		return output;
+		return intHighestY;
 	}
 }

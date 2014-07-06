@@ -13,12 +13,12 @@ import potions.*;
 import fight.Fighter;
 import magic.*;
 import main.Confirm;
+import movement.Coordinates;
 import inventory.*;
 
 public class Player extends Fighter{
 	public String strName;
-	public int x;
-	public int y;
+	private Coordinates coordinates;
 	private final int intMAXHealth = 20;
 	private int intHealth;
 	private Inventory inventory;
@@ -28,9 +28,16 @@ public class Player extends Fighter{
 	public Player(String name){
 		intHealth= 10;
 		strName = name;
-		x=0;
-		y=0;
+		coordinates = new Coordinates(0,0);
 		inventory = new Inventory();
+	}
+	
+	public Coordinates getCoordinates(){
+		return coordinates;
+	}
+	
+	public void setCoordinates(Coordinates newCoordinates){
+		coordinates = newCoordinates;
 	}
 	
 	public int getIntDefense(){
